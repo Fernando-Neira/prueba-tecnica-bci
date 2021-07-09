@@ -18,6 +18,8 @@ repositories {
 	mavenCentral()
 }
 
+apply plugin: 'groovy'
+
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
@@ -25,11 +27,16 @@ dependencies {
 	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-security', version: '2.5.2'
 	implementation group: 'net.sf.dozer', name: 'dozer', version: '5.5.1'
 	implementation group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.1'
+	implementation group: 'org.codehaus.groovy', name: 'groovy-all', version: '3.0.8', ext: 'pom'
 
 	compileOnly 'org.projectlombok:lombok'
 	runtimeOnly 'com.h2database:h2'
+
 	annotationProcessor 'org.projectlombok:lombok'
+
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation group: 'org.spockframework', name: 'spock-core', version: '2.0-groovy-3.0'
+
 }
 
 test {

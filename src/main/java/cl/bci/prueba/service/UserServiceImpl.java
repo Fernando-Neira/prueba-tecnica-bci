@@ -8,8 +8,6 @@ import cl.bci.prueba.entity.UserEntity;
 import cl.bci.prueba.exception.GenericException;
 import cl.bci.prueba.repository.PhoneRepository;
 import cl.bci.prueba.repository.UserRepository;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.dozer.DozerBeanMapper;
 import org.springframework.http.HttpStatus;
@@ -34,7 +32,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto register(UserDto request) {
-        validateIfEmailExists(request.getEmail());
+        if (userRepository.findByEmailIgnoreCase(request.getEmail()).isPresent()) {
+            throw GenericException
+                    .newInstance(HttpStatus.BAD_REQUEST.getReasonPhrase())
+                    .httpStatus(HttpStatus.BAD_REQUEST)
+                    .detail(String.format("Email %s ya se encuentra registrado.", request.getEmail()));
+        }
 
         UserEntity userEntity = userRepository.save(mapper.map(request, UserEntity.class));
         List<PhoneDto> phoneList = savePhoneList(userEntity, request.getPhones());
@@ -55,7 +58,7 @@ public class UserServiceImpl implements UserService {
                 .stream()
                 .map(phoneDto -> mapper.map(phoneDto, PhoneEntity.class))
                 .peek(phoneEntity -> phoneEntity.setUserEntity(userEntity))
-                .map(phoneEntity -> mapper.map(phoneEntity, PhoneDto.class))
+                .map(phoneEntity -> mapper.map(phoneRepository.save(phoneEntity), PhoneDto.class))
                 .collect(Collectors.toList());
     }
 
@@ -89,7 +92,7 @@ public class UserServiceImpl implements UserService {
         userEntityNew = userRepository.save(userEntityNew);
 
         List<PhoneEntity> phoneEntityList = phoneRepository.findAllByUserEntity(userEntityNew);
-        phoneEntityList = mergePhoneEntities(phoneEntityList, request.getPhones())
+        phoneEntityList = mergePhoneEntities(phoneEntityList, request.getPhones(), userEntityNew)
                 .stream()
                 .map(phoneRepository::save)
                 .collect(Collectors.toList());
@@ -139,17 +142,8 @@ public class UserServiceImpl implements UserService {
                 .build();
     }
 
-    private void validateIfEmailExists(String email) {
-        if (userRepository.findByEmailIgnoreCase(email).isPresent()) {
-            throw GenericException
-                    .newInstance(HttpStatus.BAD_REQUEST.getReasonPhrase())
-                    .httpStatus(HttpStatus.BAD_REQUEST)
-                    .detail(String.format("Email %s ya se encuentra registrado.", email));
-        }
-    }
-
     private UserEntity mergeUserEntityWithUserDto(UserEntity userEntity, UserDto userDto) {
-        if (userDto.getName() != null){
+        if (userDto.getName() != null) {
             userEntity.setName(userDto.getName());
         }
 
@@ -160,7 +154,7 @@ public class UserServiceImpl implements UserService {
         return userEntity;
     }
 
-    private List<PhoneEntity> mergePhoneEntities(List<PhoneEntity> phoneEntities, List<PhoneDto> phoneDtos) {
+    private List<PhoneEntity> mergePhoneEntities(List<PhoneEntity> phoneEntities, List<PhoneDto> phoneDtos, UserEntity userEntityNew) {
         if (phoneDtos == null || phoneDtos.isEmpty()) {
             return phoneEntities;
         }
@@ -171,8 +165,10 @@ public class UserServiceImpl implements UserService {
             if (phoneEntityMatch.isPresent()) {
                 phoneEntityMatch.get().setCityCode(phoneDto.getCityCode());
                 phoneEntityMatch.get().setCountryCode(phoneDto.getCountryCode());
-            }else {
-                phoneEntities.add(mapper.map(phoneDto, PhoneEntity.class));
+            } else {
+                PhoneEntity newPhoneEntity = mapper.map(phoneDto, PhoneEntity.class);
+                newPhoneEntity.setUserEntity(userEntityNew);
+                phoneEntities.add(newPhoneEntity);
             }
 
         });

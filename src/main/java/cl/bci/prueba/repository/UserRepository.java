@@ -12,8 +12,11 @@ import java.util.UUID;
 public interface UserRepository extends CrudRepository<UserEntity, UUID> {
 
     List<UserEntity> findAll();
+
     Optional<UserEntity> findByEmailIgnoreCase(String email);
+
     Optional<UserEntity> findByEmailIgnoreCaseAndPassword(String email, String password);
+
     int deleteByEmailIgnoreCase(String email);
 
 

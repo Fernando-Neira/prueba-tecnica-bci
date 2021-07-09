@@ -34,7 +34,8 @@ public class UserDto {
 
     @NotBlank(message = "Debes ingresar una contraseña.")
     @Size(min = 8, message = "La contraseña debe contener al menos 8 caracteres.")
-    @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[a-zA-Z\\d]{8,}$", message = "La contraseña debe contener una mayuscula, letras minúsculas, y dos numeros") //RegEx que valida que exista al menos una minuscula, una mayuscula, un digito y tenga un minimo de 8 caracteres
+    @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[a-zA-Z\\d]{8,}$", message = "La contraseña debe contener una mayuscula, letras minúsculas, y dos numeros")
+    //RegEx que valida que exista al menos una minuscula, una mayuscula, un digito y tenga un minimo de 8 caracteres
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
