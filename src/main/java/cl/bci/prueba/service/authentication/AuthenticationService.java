@@ -1,4 +1,4 @@
-package cl.bci.prueba.service;
+package cl.bci.prueba.service.authentication;
 
 public interface AuthenticationService {
 

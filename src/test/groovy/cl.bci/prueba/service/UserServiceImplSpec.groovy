@@ -7,6 +7,8 @@ import cl.bci.prueba.entity.UserEntity
 import cl.bci.prueba.exception.GenericException
 import cl.bci.prueba.repository.PhoneRepository
 import cl.bci.prueba.repository.UserRepository
+import cl.bci.prueba.service.authentication.AuthenticationService
+import cl.bci.prueba.service.user.UserServiceImpl
 import org.dozer.DozerBeanMapper
 import org.springframework.http.HttpStatus
 import spock.lang.Specification

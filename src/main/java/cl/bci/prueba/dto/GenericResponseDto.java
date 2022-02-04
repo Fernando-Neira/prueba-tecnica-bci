@@ -9,6 +9,9 @@ import lombok.ToString;
 
 import java.util.List;
 
+/**
+ * Clase para respuestas genericas
+ */
 @Builder
 @Getter
 @ToString

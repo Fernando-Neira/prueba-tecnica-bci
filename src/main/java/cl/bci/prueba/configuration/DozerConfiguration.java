@@ -6,9 +6,16 @@ import org.springframework.context.annotation.Configuration;
 
 import java.util.Collections;
 
+/**
+ * Clase de configuración para DozerBeanMapper
+ */
 @Configuration
 public class DozerConfiguration {
 
+    /**
+     * Bean de DozerBeanMapper con soporte para tipos de JDK8
+     * @return
+     */
     @Bean
     public DozerBeanMapper dozerBeanMapper() {
         DozerBeanMapper dozerBeanMapper = new DozerBeanMapper();

@@ -5,8 +5,19 @@ import org.dozer.CustomConverter;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+/**
+ * Clase que soporta mapper para tipos de Java8
+ */
 public class DozerMappingJDK8 implements CustomConverter {
 
+    /**
+     * Convert
+     * @param destination
+     * @param source
+     * @param destinationClass
+     * @param sourceClass
+     * @return
+     */
     @Override
     public Object convert(Object destination, Object source, Class<?> destinationClass, Class<?> sourceClass) {
 
@@ -25,6 +36,11 @@ public class DozerMappingJDK8 implements CustomConverter {
         return destination;
     }
 
+    /**
+     * Método para copiar valores de un objeto LocalDateTime a otro
+     * @param source
+     * @return
+     */
     private LocalDateTime localDateTimeCreator(Object source) {
         LocalDateTime srcObject = (LocalDateTime) source;
         return LocalDateTime.of(
@@ -38,6 +54,11 @@ public class DozerMappingJDK8 implements CustomConverter {
         );
     }
 
+    /**
+     * Método que copia el valor de un UUID a otro objeto
+     * @param source
+     * @return
+     */
     private UUID uuidCreator(Object source) {
         UUID srcObject = (UUID) source;
         return UUID.fromString(srcObject.toString());

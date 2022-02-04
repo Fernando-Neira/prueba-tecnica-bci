@@ -1,9 +1,10 @@
-package cl.bci.prueba.service;
+package cl.bci.prueba.service.user;
 
 import cl.bci.prueba.dto.GenericResponseDto;
 import cl.bci.prueba.dto.UserDto;
 
 import java.util.List;
+
 
 public interface UserService {
 

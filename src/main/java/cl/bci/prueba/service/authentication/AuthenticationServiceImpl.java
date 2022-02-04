@@ -1,4 +1,4 @@
-package cl.bci.prueba.service;
+package cl.bci.prueba.service.authentication;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -12,16 +12,30 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Servicio de autenticacion
+ */
 @Service
 @RequiredArgsConstructor
 public class AuthenticationServiceImpl implements AuthenticationService {
 
+    /**
+     * Secreto
+     */
     @Value("${app.security.auth.secret}")
     private String secret;
 
+    /**
+     * Prefijo token
+     */
     @Value("${app.security.auth.prefix}")
     private String prefix;
 
+    /**
+     * Método encargado de generar el token
+     * @param email
+     * @return
+     */
     @Override
     public String generateAccessToken(String email) {
         List<GrantedAuthority> grantedAuthorities = AuthorityUtils.createAuthorityList("ROLE_USER");

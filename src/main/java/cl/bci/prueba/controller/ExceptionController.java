@@ -17,6 +17,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * Controlador de excepciones
+ * Captura todas las excepciones no controladas.
+ */
 @RestControllerAdvice
 @Slf4j
 public class ExceptionController extends ResponseEntityExceptionHandler {

@@ -6,6 +6,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * Clase Dto para telefono
+ */
 @Data
 @Builder
 @AllArgsConstructor
